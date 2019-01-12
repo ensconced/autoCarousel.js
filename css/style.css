@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  outline: 5px solid #333;
+  width: 600px;
+  height: 100px;
+  margin: 50px 0 0 400px;
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+li p {
+  padding: 0 20px;
+}
