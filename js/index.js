@@ -14,17 +14,10 @@
     position: 'relative'
   };
 
-  function attrInt($wrapper, attr) {
-    return parseInt($wrapper.attr(attr), 10);
-  }
-
   function autoCarousel($wrapper, period, slideDuration, itemsPerView) {
     function removeFirstItems(n) {
       $ul.children().slice(0, n).remove();
-      $ul.css({
-        transition: `left 0s ease`,
-        left: '0'
-      });
+      $ul.css({ left: '0' });
     }
     function addChild() {
       var $li = $(document.createElement('li'));
@@ -41,21 +34,15 @@
       }
     }
     function slide() {
-      addChildren(itemsPerView, $ul);
-      $ul.css('transition', `left ` + String(slideDuration / 1000) + 's ease');
-      setTimeout(function () {
+      $ul.animate({ left: '-100%'}, slideDuration, function () {
         removeFirstItems(itemsPerView, $ul);
-      }, slideDuration);
-      $ul.css('left', '-100%');
+        addChildren(itemsPerView, $ul);
+      });
     }
     function applyStyles() {
       $wrapper.css(WRAPPER_STYLES);
-      $ul.css(Object.assign(UL_STYLES, {
-        transition: `left ` + String(slideDuration / 1000) + 's ease'
-      }));
-      $listItems.each(function () {
-        $(this).css('width', liWidth);
-      });
+      $ul.css(UL_STYLES);
+      $listItems.css('width', liWidth);
     }
 
     var currentIdx = itemsPerView;
@@ -67,12 +54,13 @@
       return li.textContent;
     });
     $listItems.slice(itemsPerView).remove();
+    addChildren(itemsPerView, $ul);
     setInterval(slide, period);
   }
   function fitItems($wrapper) {
     var wrapperWidth = parseInt($wrapper.css('width'), 10);
-    var minItemWidth = attrInt($wrapper, 'data-min-item-width');
-    var maxItemsPerView = attrInt($wrapper, 'data-items-per-view');
+    var minItemWidth = parseInt($wrapper.data('min-item-width'), 10);
+    var maxItemsPerView = parseInt($wrapper.data('items-per-view'), 10);
     return Math.min(Math.floor(wrapperWidth / minItemWidth), maxItemsPerView);
   }
 
@@ -81,9 +69,9 @@
 
     autoCarousels.each(function () {
       var $wrapper = $(this);
-      var period = attrInt($wrapper, 'data-period');;
-      var slideDuration = attrInt($wrapper, 'data-slide-duration');
+      var period = parseInt($wrapper.data('period'), 10);
+      var slideDuration = parseInt($wrapper.data('slide-duration'), 10);
       autoCarousel($wrapper, period, slideDuration, fitItems($wrapper));
     });
   });
-} ());
+}());
