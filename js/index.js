@@ -14,49 +14,58 @@
     position: 'relative'
   };
 
-  function autoCarousel($wrapper, period, slideDuration, itemsPerView) {
-    function removeFirstItems(n) {
-      $ul.children().slice(0, n).remove();
-      $ul.css({ left: '0' });
-    }
-    function addChild() {
-      var $li = $(document.createElement('li'));
-      var $p = $(document.createElement('p'));
-      $p.text(textContents[currentIdx++ % textContents.length]);
-      $li.append($p);
-      $ul.append($li);
-      $li.css('width', liWidth);
-    }
-    function addChildren(n) {
-      var count = 0;
-      while (count++ < n) {
-        addChild($ul);
-      }
-    }
-    function slide() {
-      $ul.animate({ left: '-100%'}, slideDuration, function () {
-        removeFirstItems(itemsPerView, $ul);
-        addChildren(itemsPerView, $ul);
-      });
-    }
-    function applyStyles() {
-      $wrapper.css(WRAPPER_STYLES);
-      $ul.css(UL_STYLES);
-      $listItems.css('width', liWidth);
-    }
-
-    var currentIdx = itemsPerView;
-    var $ul = $wrapper.find('ul');
-    var $listItems = $ul.children();
-    var liWidth = (100 / (itemsPerView * 2)).toFixed(3) + '%';
-    applyStyles();
-    var textContents = $.makeArray($listItems).map(function (li) {
+  function Carousel($wrapper, period, slideDuration, itemsPerView) {
+    this.$wrapper = $wrapper;
+    this.slideDuration = slideDuration;
+    this.itemsPerView = itemsPerView;
+    this.currentIdx = itemsPerView;
+    this.$ul = $wrapper.find('ul');
+    this.$listItems = this.$ul.children();
+    this.liWidth = (100 / (itemsPerView * 2)).toFixed(3) + '%';
+    this.applyStyles();
+    this.textContents = $.makeArray(this.$listItems).map(function (li) {
       return li.textContent;
     });
-    $listItems.slice(itemsPerView).remove();
-    addChildren(itemsPerView, $ul);
-    setInterval(slide, period);
+    this.$listItems.slice(this.itemsPerView).remove();
+    this.addChildren(this.itemsPerView, this.$ul);
+    setInterval(this.slide.bind(this), period);
   }
+
+  Carousel.prototype = {
+    removeFirstItems: function(n) {
+      this.$ul.children().slice(0, n).remove();
+      this.$ul.css({ left: '0' });
+    },
+    addChild: function() {
+      this.$li = $(document.createElement('li'));
+      this.$p = $(document.createElement('p'));
+      this.$p.text(this.textContents[this.currentIdx++ % this.textContents.length]);
+      this.$li.append(this.$p);
+      this.$ul.append(this.$li);
+      this.$li.css('width', this.liWidth);
+    },
+    addChildren: function(n) {
+      var count = 0;
+      while (count++ < n) {
+        this.addChild(this.$ul);
+      }
+    },
+    slide: function() {
+      var self = this;
+      this.$ul.animate({ left: '-100%'}, this.slideDuration, function () {
+        self.removeFirstItems(self.itemsPerView, self.$ul);
+        self.addChildren(self.itemsPerView, self.$ul);
+      });
+    },
+    applyStyles: function() {
+      this.$wrapper.css(WRAPPER_STYLES);
+      this.$ul.css(UL_STYLES);
+      this.$listItems.css('width', this.liWidth);
+    },
+  };
+
+  Carousel.prototype.constructor = Carousel;
+
   function fitItems($wrapper) {
     var wrapperWidth = parseInt($wrapper.css('width'), 10);
     var minItemWidth = parseInt($wrapper.data('min-item-width'), 10);
@@ -65,13 +74,11 @@
   }
 
   $(function () {
-    var autoCarousels = $('.autocarousel');
-
-    autoCarousels.each(function () {
+    $('.autocarousel').each(function () {
       var $wrapper = $(this);
       var period = parseInt($wrapper.data('period'), 10);
       var slideDuration = parseInt($wrapper.data('slide-duration'), 10);
-      autoCarousel($wrapper, period, slideDuration, fitItems($wrapper));
+      new Carousel($wrapper, period, slideDuration, fitItems($wrapper));
     });
   });
 }());
