@@ -1,0 +1,23 @@
+{
+  "name": "@joebarnett/carousel",
+  "version": "1.1.0",
+  "description": "turns unordered lists into sliding carousels",
+  "main": "./index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ensconced/autoCarousel.js.git"
+  },
+  "keywords": [
+    "carousel",
+    "sliding"
+  ],
+  "author": "Joe Barnett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ensconced/autoCarousel.js/issues"
+  },
+  "homepage": "https://github.com/ensconced/autoCarousel.js#readme"
+}
