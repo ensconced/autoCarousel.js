@@ -2,9 +2,10 @@
   "name": "@joebarnett/carousel",
   "version": "1.2.0",
   "description": "turns unordered lists into sliding carousels",
-  "main": "./js/index.js",
+  "main": "./dist/js/app.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "mkdir -p dist/js && uglifyjs src/js/*.js -m -o dist/js/app.js && uglifyjs src/js/*.js -m -c -o dist/js/app.min.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/ensconced/autoCarousel.js/issues"
   },
-  "homepage": "https://github.com/ensconced/autoCarousel.js#readme"
+  "homepage": "https://github.com/ensconced/autoCarousel.js#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "uglify-js": "^3.4.9"
+  }
 }
