@@ -1,6 +1,6 @@
 {
   "name": "@joebarnett/carousel",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "turns unordered lists into sliding carousels",
   "main": "./dist/js/app.min.js",
   "scripts": {
