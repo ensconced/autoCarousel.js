@@ -5,7 +5,7 @@
   "main": "./dist/js/app.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "mkdir -p dist/js && uglifyjs src/js/*.js -m -o dist/js/app.js && uglifyjs src/js/*.js -m -c -o dist/js/app.min.js"
+    "prepublish": "mkdir -p dist/js && uglifyjs src/js/*.js -m --mangle-props -c -o dist/js/app.min.js"
   },
   "repository": {
     "type": "git",
